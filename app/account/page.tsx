@@ -34,9 +34,9 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
   );
 
   return (
-    <main className="min-h-screen bg-[linear-gradient(180deg,_#0f172a_0%,_#0f172a_35%,_#020617_100%)] px-6 py-10 text-white sm:px-10 lg:px-16">
+    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(255,255,255,0.1),_transparent_24%),linear-gradient(180deg,_#000000_0%,_#040404_42%,_#000000_100%)] px-6 py-10 text-white sm:px-10 lg:px-16">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8">
-        <section className="rounded-[32px] border border-white/10 bg-white/[0.06] p-8 shadow-2xl shadow-sky-950/20 backdrop-blur sm:p-10">
+        <section className="rounded-[32px] border border-white/12 bg-white/[0.05] p-8 shadow-2xl shadow-black/40 backdrop-blur sm:p-10">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-2xl space-y-4">
               <div className="flex items-center gap-4">
@@ -46,16 +46,16 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
                     alt={summary.user.name ?? "avatar"}
                     width={72}
                     height={72}
-                    className="h-[72px] w-[72px] rounded-3xl border border-white/10 object-cover"
+                    className="h-[72px] w-[72px] rounded-3xl border border-white/10 object-cover grayscale"
                   />
                 ) : (
-                  <div className="flex h-[72px] w-[72px] items-center justify-center rounded-3xl bg-sky-400/15 text-3xl font-semibold text-sky-100">
+                  <div className="flex h-[72px] w-[72px] items-center justify-center rounded-3xl border border-white/10 bg-white/8 text-3xl font-semibold text-white">
                     {(summary.user.name ?? "U").slice(0, 1).toUpperCase()}
                   </div>
                 )}
 
                 <div className="space-y-1">
-                  <p className="text-sm uppercase tracking-[0.24em] text-sky-200/75">
+                  <p className="text-sm uppercase tracking-[0.24em] text-white/55">
                     Account Center
                   </p>
                   <h1 className="text-3xl font-semibold tracking-tight text-white">
@@ -63,24 +63,24 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
                       summary.user.name ??
                       "未设置昵称"}
                   </h1>
-                  <p className="text-sm text-slate-300">
+                  <p className="text-sm text-white/64">
                     {summary.user.email ?? "未返回邮箱"}
                   </p>
                 </div>
               </div>
 
-              <div className="grid gap-3 text-sm text-slate-200 sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3">
-                  <span className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+              <div className="grid gap-3 text-sm text-white/82 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-black/40 px-4 py-3">
+                  <span className="block text-xs uppercase tracking-[0.2em] text-white/42">
                     Local User ID
                   </span>
-                  <code className="mt-2 block break-all text-sky-100">
+                  <code className="mt-2 block break-all text-white">
                     {summary.user.id}
                   </code>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3">
-                  <span className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                <div className="rounded-2xl border border-white/10 bg-black/40 px-4 py-3">
+                  <span className="block text-xs uppercase tracking-[0.2em] text-white/42">
                     Linked Providers
                   </span>
                   <span className="mt-2 block text-lg font-semibold text-white">
@@ -88,15 +88,15 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
                   </span>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3">
-                  <span className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                <div className="rounded-2xl border border-white/10 bg-black/40 px-4 py-3">
+                  <span className="block text-xs uppercase tracking-[0.2em] text-white/42">
                     Role
                   </span>
                   <span className="mt-2 block text-white">{summary.user.role}</span>
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3">
-                  <span className="block text-xs uppercase tracking-[0.2em] text-slate-400">
+                <div className="rounded-2xl border border-white/10 bg-black/40 px-4 py-3">
+                  <span className="block text-xs uppercase tracking-[0.2em] text-white/42">
                     Status
                   </span>
                   <span className="mt-2 block text-white">
@@ -109,7 +109,7 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-white/15 bg-slate-950/45 px-5 text-sm font-semibold text-slate-50 transition hover:bg-slate-900/70"
+                className="inline-flex h-12 items-center justify-center rounded-full border border-white/16 bg-white/6 px-5 text-sm font-semibold text-white transition hover:bg-white/12"
               >
                 返回首页
               </Link>
@@ -119,9 +119,9 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
         </section>
 
         <section className="grid gap-6 lg:grid-cols-[1fr_0.95fr]">
-          <article className="rounded-[28px] border border-white/10 bg-slate-950/50 p-6 shadow-xl shadow-black/20">
+          <article className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6 shadow-xl shadow-black/30">
             <h2 className="text-xl font-semibold text-white">已绑定平台</h2>
-            <p className="mt-2 text-sm leading-7 text-slate-300">
+            <p className="mt-2 text-sm leading-7 text-white/64">
               每条记录都绑定到同一个本地用户 ID。后续新增平台时，保持登录状态点击绑定即可安全关联到当前账号。
             </p>
 
@@ -137,25 +137,25 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
                         <p className="text-lg font-semibold text-white">
                           {account.provider}
                         </p>
-                        <p className="mt-1 text-sm text-slate-300">
+                        <p className="mt-1 text-sm text-white/64">
                           providerAccountId:
-                          <code className="ml-2 rounded bg-white/10 px-2 py-1 text-sky-100">
+                          <code className="ml-2 rounded border border-white/10 bg-white/8 px-2 py-1 text-white">
                             {maskProviderAccountId(account.providerAccountId)}
                           </code>
                         </p>
                       </div>
-                      <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-xs uppercase tracking-[0.22em] text-emerald-100">
+                      <span className="rounded-full border border-white/14 bg-white/8 px-3 py-1 text-xs uppercase tracking-[0.22em] text-white">
                         linked
                       </span>
                     </div>
 
-                    <p className="mt-3 text-xs text-slate-400">
+                    <p className="mt-3 text-xs text-white/42">
                       绑定时间：{new Date(account.createdAt).toLocaleString("zh-CN")}
                     </p>
                   </div>
                 ))
               ) : (
-                <div className="rounded-3xl border border-dashed border-white/15 bg-white/[0.04] p-5 text-sm leading-7 text-slate-300">
+                <div className="rounded-3xl border border-dashed border-white/15 bg-white/[0.04] p-5 text-sm leading-7 text-white/64">
                   还没有任何已绑定平台。至少完成一次第三方登录后，这里才会出现绑定记录。
                 </div>
               )}
@@ -163,9 +163,9 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
           </article>
 
           <aside className="space-y-6">
-            <div className="rounded-[28px] border border-white/10 bg-white/[0.06] p-6">
+            <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
               <h2 className="text-xl font-semibold text-white">绑定新平台</h2>
-              <p className="mt-2 text-sm leading-7 text-slate-300">
+              <p className="mt-2 text-sm leading-7 text-white/64">
                 当前登录状态下再次执行 OAuth，会把新平台账号绑定到当前本地用户，而不是创建新用户。
               </p>
 
@@ -176,14 +176,14 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
                   return (
                     <div
                       key={provider.id}
-                      className="rounded-3xl border border-white/10 bg-slate-950/45 p-5"
+                      className="rounded-3xl border border-white/10 bg-black/45 p-5"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div>
                           <p className="text-lg font-semibold text-white">
                             {provider.name}
                           </p>
-                          <p className="mt-1 text-sm text-slate-300">
+                          <p className="mt-1 text-sm text-white/64">
                             {provider.enabled
                               ? "已配置，可直接绑定"
                               : "尚未配置环境变量"}
@@ -192,10 +192,10 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
                         <span
                           className={`rounded-full px-3 py-1 text-xs uppercase tracking-[0.22em] ${
                             isLinked
-                              ? "border border-emerald-300/20 bg-emerald-300/10 text-emerald-100"
+                              ? "border border-white/14 bg-white/8 text-white"
                               : provider.enabled
-                                ? "border border-sky-300/20 bg-sky-300/10 text-sky-100"
-                                : "border border-white/10 bg-white/5 text-slate-300"
+                                ? "border border-white/14 bg-white/8 text-white"
+                                : "border border-white/10 bg-white/5 text-white/48"
                           }`}
                         >
                           {isLinked
@@ -208,7 +208,7 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
 
                       <div className="mt-4 flex flex-wrap items-center gap-3">
                         {isLinked ? (
-                          <span className="text-sm text-slate-300">
+                          <span className="text-sm text-white/64">
                             当前账号已经绑定了 {provider.name}。
                           </span>
                         ) : provider.enabled ? (
@@ -218,7 +218,7 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
                             mode="link"
                           />
                         ) : (
-                          <code className="rounded-2xl bg-black/30 px-3 py-2 text-xs text-slate-300">
+                          <code className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/62">
                             {provider.requiredEnvNames.join(", ")}
                           </code>
                         )}
@@ -229,9 +229,9 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
               </div>
             </div>
 
-            <div className="rounded-[28px] border border-sky-300/10 bg-sky-300/[0.08] p-6">
+            <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
               <h2 className="text-xl font-semibold text-white">当前启用平台</h2>
-              <p className="mt-2 text-sm leading-7 text-slate-200">
+              <p className="mt-2 text-sm leading-7 text-white/74">
                 {enabledAuthProviders.length > 0
                   ? enabledAuthProviders.map((provider) => provider.name).join(" / ")
                   : "当前还没有启用任何第三方登录平台。"}
@@ -240,20 +240,20 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
           </aside>
         </section>
 
-        <section className="flex flex-col items-start justify-between gap-4 rounded-[24px] border border-white/10 bg-black/20 px-5 py-4 text-sm text-slate-300 sm:flex-row sm:items-center">
+        <section className="flex flex-col items-start justify-between gap-4 rounded-[24px] border border-white/10 bg-white/[0.03] px-5 py-4 text-sm text-white/64 sm:flex-row sm:items-center">
           <p className="leading-7">
             如果你准备正式上线，记得把公开可访问的隐私政策和服务条款地址配置到 OAuth 平台控制台。
           </p>
           <div className="flex flex-wrap gap-3">
             <Link
               href="/privacy"
-              className="inline-flex h-10 items-center justify-center rounded-full border border-white/15 bg-slate-950/45 px-4 font-medium text-slate-50 transition hover:bg-slate-900/70"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-white/16 bg-white/6 px-4 font-medium text-white transition hover:bg-white/12"
             >
               隐私政策
             </Link>
             <Link
               href="/terms"
-              className="inline-flex h-10 items-center justify-center rounded-full border border-white/15 bg-slate-950/45 px-4 font-medium text-slate-50 transition hover:bg-slate-900/70"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-white/16 bg-white/6 px-4 font-medium text-white transition hover:bg-white/12"
             >
               服务条款
             </Link>
