@@ -35,7 +35,7 @@ export function ProviderAuthButton({
       type="button"
       onClick={handleSignIn}
       disabled={isPending}
-      className="inline-flex h-12 items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-slate-950 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+      className="inline-flex h-12 items-center justify-center rounded-full border border-sky-200/30 bg-sky-300 px-5 text-sm font-semibold text-slate-950 shadow-lg shadow-sky-950/20 transition hover:bg-sky-200 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {isPending ? "跳转中..." : buttonLabel}
     </button>
@@ -62,7 +62,7 @@ export function SignOutButton({
       type="button"
       onClick={handleSignOut}
       disabled={isPending}
-      className="inline-flex h-12 items-center justify-center rounded-full border border-white/20 px-5 text-sm font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-60"
+      className="inline-flex h-12 items-center justify-center rounded-full border border-white/15 bg-slate-950/45 px-5 text-sm font-semibold text-slate-50 transition hover:bg-slate-900/70 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {isPending ? "退出中..." : "退出登录"}
     </button>

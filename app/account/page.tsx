@@ -109,7 +109,7 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/"
-                className="inline-flex h-12 items-center justify-center rounded-full border border-white/15 px-5 text-sm font-semibold text-white transition hover:bg-white/10"
+                className="inline-flex h-12 items-center justify-center rounded-full border border-white/15 bg-slate-950/45 px-5 text-sm font-semibold text-slate-50 transition hover:bg-slate-900/70"
               >
                 返回首页
               </Link>
@@ -238,6 +238,26 @@ export default async function AccountPage(): Promise<React.JSX.Element> {
               </p>
             </div>
           </aside>
+        </section>
+
+        <section className="flex flex-col items-start justify-between gap-4 rounded-[24px] border border-white/10 bg-black/20 px-5 py-4 text-sm text-slate-300 sm:flex-row sm:items-center">
+          <p className="leading-7">
+            如果你准备正式上线，记得把公开可访问的隐私政策和服务条款地址配置到 OAuth 平台控制台。
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/privacy"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-white/15 bg-slate-950/45 px-4 font-medium text-slate-50 transition hover:bg-slate-900/70"
+            >
+              隐私政策
+            </Link>
+            <Link
+              href="/terms"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-white/15 bg-slate-950/45 px-4 font-medium text-slate-50 transition hover:bg-slate-900/70"
+            >
+              服务条款
+            </Link>
+          </div>
         </section>
       </div>
     </main>

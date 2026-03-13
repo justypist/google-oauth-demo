@@ -50,7 +50,7 @@ export default async function Home(): Promise<React.JSX.Element> {
                   <>
                     <Link
                       href="/account"
-                      className="inline-flex h-12 items-center justify-center rounded-full bg-white px-5 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"
+                      className="inline-flex h-12 items-center justify-center rounded-full border border-sky-200/30 bg-sky-300 px-5 text-sm font-semibold text-slate-950 shadow-lg shadow-sky-950/20 transition hover:bg-sky-200"
                     >
                       账号中心
                     </Link>
@@ -230,6 +230,26 @@ export default async function Home(): Promise<React.JSX.Element> {
               </p>
             </div>
           </aside>
+        </section>
+
+        <section className="flex flex-col items-start justify-between gap-4 rounded-[24px] border border-white/10 bg-black/20 px-5 py-4 text-sm text-slate-300 sm:flex-row sm:items-center">
+          <p className="leading-7">
+            正式上线前，请把隐私政策和服务条款页面地址填入第三方开放平台控制台。
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/privacy"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-white/15 bg-slate-950/45 px-4 font-medium text-slate-50 transition hover:bg-slate-900/70"
+            >
+              隐私政策
+            </Link>
+            <Link
+              href="/terms"
+              className="inline-flex h-10 items-center justify-center rounded-full border border-white/15 bg-slate-950/45 px-4 font-medium text-slate-50 transition hover:bg-slate-900/70"
+            >
+              服务条款
+            </Link>
+          </div>
         </section>
       </div>
     </main>
