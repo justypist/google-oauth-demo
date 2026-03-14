@@ -4,41 +4,83 @@ import GoogleProvider from "next-auth/providers/google";
 
 export type AuthProviderId = "github" | "google";
 
+type ProviderEnvNames = {
+  clientId: readonly string[];
+  clientSecret: readonly string[];
+};
+
 export type AuthProviderMeta = {
+  callbackPath: string;
   enabled: boolean;
+  envNameGroups: ProviderEnvNames;
   id: AuthProviderId;
   name: string;
   requiredEnvNames: readonly string[];
 };
 
 type AuthProviderDefinition = AuthProviderMeta & {
-  createProvider: () => Provider;
+  createProvider: (credentials: {
+    clientId: string;
+    clientSecret: string;
+  }) => Provider;
 };
+
+function getEnvValue(names: readonly string[]): string | null {
+  for (const name of names) {
+    const value = process.env[name];
+
+    if (value) {
+      return value;
+    }
+  }
+
+  return null;
+}
+
+function resolveProviderCredentials(
+  envNameGroups: ProviderEnvNames,
+): {
+  clientId: string | null;
+  clientSecret: string | null;
+} {
+  return {
+    clientId: getEnvValue(envNameGroups.clientId),
+    clientSecret: getEnvValue(envNameGroups.clientSecret),
+  };
+}
 
 const providerDefinitions: AuthProviderDefinition[] = [
   {
-    createProvider: () =>
+    callbackPath: "/api/auth/callback/google",
+    createProvider: (credentials) =>
       GoogleProvider({
-        clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+        clientId: credentials.clientId,
+        clientSecret: credentials.clientSecret,
       }),
-    enabled: Boolean(
-      process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET,
-    ),
+    envNameGroups: {
+      clientId: ["GOOGLE_CLIENT_ID"],
+      clientSecret: ["GOOGLE_CLIENT_SECRET"],
+    },
+    enabled: false,
     id: "google",
     name: "Google",
     requiredEnvNames: ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"],
   },
   {
-    createProvider: () =>
+    callbackPath: "/api/auth/callback/github",
+    createProvider: (credentials) =>
       GitHubProvider({
-        clientId: process.env.GITHUB_ID ?? "",
-        clientSecret: process.env.GITHUB_SECRET ?? "",
+        clientId: credentials.clientId,
+        clientSecret: credentials.clientSecret,
       }),
-    enabled: Boolean(process.env.GITHUB_ID && process.env.GITHUB_SECRET),
+    envNameGroups: {
+      clientId: ["GITHUB_CLIENT_ID"],
+      clientSecret: ["GITHUB_CLIENT_SECRET"],
+    },
+    enabled: false,
     id: "github",
     name: "GitHub",
-    requiredEnvNames: ["GITHUB_ID", "GITHUB_SECRET"],
+    requiredEnvNames: ["GITHUB_CLIENT_ID", "GITHUB_CLIENT_SECRET"],
   },
 ];
 
@@ -49,12 +91,18 @@ export const authBaseEnvNames = [
 ] as const;
 
 export const supportedAuthProviders: AuthProviderMeta[] = providerDefinitions.map(
-  (provider) => ({
-    enabled: provider.enabled,
-    id: provider.id,
-    name: provider.name,
-    requiredEnvNames: provider.requiredEnvNames,
-  }),
+  (provider) => {
+    const credentials = resolveProviderCredentials(provider.envNameGroups);
+
+    return {
+      callbackPath: provider.callbackPath,
+      enabled: Boolean(credentials.clientId && credentials.clientSecret),
+      envNameGroups: provider.envNameGroups,
+      id: provider.id,
+      name: provider.name,
+      requiredEnvNames: provider.requiredEnvNames,
+    };
+  },
 );
 
 export const enabledAuthProviders = supportedAuthProviders.filter(
@@ -62,8 +110,19 @@ export const enabledAuthProviders = supportedAuthProviders.filter(
 );
 
 export const oauthProviders = providerDefinitions
-  .filter((provider) => provider.enabled)
-  .map((provider) => provider.createProvider());
+  .map((provider) => {
+    const credentials = resolveProviderCredentials(provider.envNameGroups);
+
+    if (!credentials.clientId || !credentials.clientSecret) {
+      return null;
+    }
+
+    return provider.createProvider({
+      clientId: credentials.clientId,
+      clientSecret: credentials.clientSecret,
+    });
+  })
+  .filter((provider): provider is Provider => provider !== null);
 
 export const isAuthConfigured = Boolean(
   process.env.DATABASE_URL &&

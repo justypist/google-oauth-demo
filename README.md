@@ -46,6 +46,8 @@ cp .env.example .env
 ```bash
 GOOGLE_CLIENT_ID=你的_google_client_id
 GOOGLE_CLIENT_SECRET=你的_google_client_secret
+GITHUB_CLIENT_ID=你的_github_client_id
+GITHUB_CLIENT_SECRET=你的_github_client_secret
 NEXTAUTH_SECRET=自己生成的长随机字符串
 NEXTAUTH_URL=http://localhost:3000
 ```
@@ -145,7 +147,9 @@ docker exec postgres psql -U typist -d test -c "CREATE DATABASE oauth_demo_dev O
 
 不同 OAuth 平台的控制台入口各不相同，但整体流程一致：创建应用、配置同意页、填写回调地址、拿到客户端凭证，再写入环境变量。
 
-下面给出一个 Google 平台示例，其他平台按各自文档替换即可。
+下面给出 Google 和 GitHub 两个平台的最小配置示例。
+
+### Google OAuth 配置
 
 1. 打开 Google Cloud Console。
 2. 创建或选择一个项目。
@@ -165,10 +169,37 @@ http://localhost:3000/api/auth/callback/google
 DATABASE_URL=postgresql://oauth_demo_dev:oauth_demo_dev@127.0.0.1:5432/oauth_demo_dev
 GOOGLE_CLIENT_ID=你的_google_client_id
 GOOGLE_CLIENT_SECRET=你的_google_client_secret
-GITHUB_ID=
-GITHUB_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
 NEXTAUTH_SECRET=自己生成的长随机字符串
 NEXTAUTH_URL=http://localhost:3000
+```
+
+### GitHub OAuth 配置
+
+1. 打开 GitHub。
+2. 进入 `Settings` -> `Developer settings` -> `OAuth Apps`。
+3. 点击 `New OAuth App`。
+4. `Application name` 自定义，例如 `oauth-demo-local`。
+5. `Homepage URL` 填：
+
+```text
+http://localhost:3000
+```
+
+6. `Authorization callback URL` 填：
+
+```text
+http://localhost:3000/api/auth/callback/github
+```
+
+7. 创建后复制 `Client ID`。
+8. 生成并复制 `Client secrets`。
+9. 填写到 `.env.local`：
+
+```bash
+GITHUB_CLIENT_ID=你的_github_client_id
+GITHUB_CLIENT_SECRET=你的_github_client_secret
 ```
 
 可以用下面命令生成 `NEXTAUTH_SECRET`：

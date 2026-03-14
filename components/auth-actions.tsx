@@ -3,10 +3,12 @@
 import { useTransition } from "react";
 import { signIn, signOut } from "next-auth/react";
 
+import type { AuthProviderId } from "@/lib/auth-providers";
+
 type AuthProviderButtonProps = {
   mode?: "link" | "signin";
   provider: {
-    id: string;
+    id: AuthProviderId;
     name: string;
   };
   callbackUrl?: string;

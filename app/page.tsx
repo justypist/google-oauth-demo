@@ -17,7 +17,18 @@ export default async function Home(): Promise<React.JSX.Element> {
     ? await getAccountCenterSummary(session.user.id)
     : null;
   const authBaseUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
-  const googleCallbackUrl = `${authBaseUrl}/api/auth/callback/google`;
+  const linkedProviderIds = new Set(
+    accountSummary?.linkedAccounts.map((account) => account.provider) ?? [],
+  );
+  const providerCallbackUrls = supportedAuthProviders.map((provider) => ({
+    callbackUrl: `${authBaseUrl}${provider.callbackPath}`,
+    envNames: [
+      ...provider.envNameGroups.clientId,
+      ...provider.envNameGroups.clientSecret,
+    ],
+    id: provider.id,
+    name: provider.name,
+  }));
   const sessionJson = session ? JSON.stringify(session, null, 2) : null;
 
   return (
@@ -165,6 +176,97 @@ export default async function Home(): Promise<React.JSX.Element> {
 
           <aside className="space-y-6">
             <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
+              <h2 className="text-xl font-semibold text-white">
+                {session ? "平台关联入口" : "平台登录入口"}
+              </h2>
+              <p className="mt-2 text-sm leading-7 text-white/64">
+                {session
+                  ? "保持当前登录态后，点击未绑定平台即可把新 OAuth 账号关联到当前本地用户。"
+                  : "这里会直接显示当前可用的平台登录按钮；未配置的平台会展示缺失的环境变量。"}
+              </p>
+              <div className="mt-6 space-y-4">
+                {supportedAuthProviders.map((provider) => {
+                  const isLinked = linkedProviderIds.has(provider.id);
+
+                  return (
+                    <div
+                      key={provider.id}
+                      className="rounded-3xl border border-white/10 bg-black/45 p-5"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="text-lg font-semibold text-white">
+                            {provider.name}
+                          </p>
+                          <p className="mt-1 text-sm text-white/64">
+                            {session
+                              ? isLinked
+                                ? "当前账号已经绑定"
+                                : provider.enabled
+                                  ? "已配置，可直接绑定"
+                                  : "尚未配置环境变量"
+                              : provider.enabled
+                                ? "已配置，可直接登录"
+                                : "尚未配置环境变量"}
+                          </p>
+                        </div>
+                        <span
+                          className={`rounded-full px-3 py-1 text-xs uppercase tracking-[0.22em] ${
+                            session
+                              ? isLinked
+                                ? "border border-white/14 bg-white/8 text-white"
+                                : provider.enabled
+                                  ? "border border-white/14 bg-white/8 text-white"
+                                  : "border border-white/10 bg-white/5 text-white/48"
+                              : provider.enabled
+                                ? "border border-white/14 bg-white/8 text-white"
+                                : "border border-white/10 bg-white/5 text-white/48"
+                          }`}
+                        >
+                          {session
+                            ? isLinked
+                              ? "已绑定"
+                              : provider.enabled
+                                ? "可绑定"
+                                : "未启用"
+                            : provider.enabled
+                              ? "可登录"
+                              : "未启用"}
+                        </span>
+                      </div>
+
+                      <div className="mt-4 flex flex-wrap items-center gap-3">
+                        {session ? (
+                          isLinked ? (
+                            <span className="text-sm text-white/64">
+                              当前账号已经绑定了 {provider.name}。
+                            </span>
+                          ) : provider.enabled ? (
+                            <ProviderAuthButton
+                              provider={provider}
+                              callbackUrl="/"
+                              mode="link"
+                            />
+                          ) : (
+                            <code className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/62">
+                              {provider.requiredEnvNames.join(", ")}
+                            </code>
+                          )
+                        ) : provider.enabled ? (
+                          <ProviderAuthButton provider={provider} />
+                        ) : (
+                          <code className="rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/62">
+                            {provider.requiredEnvNames.join(", ")}
+                          </code>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
               <h2 className="text-xl font-semibold text-white">基础环境变量</h2>
               <p className="mt-2 text-sm leading-7 text-white/64">
                 缺少下面任意一项，数据库会话和账号绑定都无法工作。
@@ -234,20 +336,33 @@ export default async function Home(): Promise<React.JSX.Element> {
               <code className="mt-4 block rounded-2xl border border-white/10 bg-black/55 px-4 py-3 text-sm text-white">
                 {authBaseUrl}/api/auth/callback/&lt;provider&gt;
               </code>
+              <div className="mt-4 space-y-3">
+                {providerCallbackUrls.map((provider) => (
+                  <div
+                    key={provider.id}
+                    className="rounded-3xl border border-white/10 bg-black/45 p-4"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm font-medium text-white">
+                        {provider.name}
+                      </span>
+                      <code className="text-xs text-white/52">
+                        {provider.envNames.join(", ")}
+                      </code>
+                    </div>
+                    <code className="mt-3 block rounded-2xl border border-amber-400/30 bg-amber-300/10 px-3 py-2 text-sm text-amber-100">
+                      {provider.callbackUrl}
+                    </code>
+                  </div>
+                ))}
+              </div>
               <p className="mt-4 text-sm leading-7 text-white/64">
-                如果 Google 报
+                如果平台控制台提示回调地址不匹配，就把上面对应平台的地址原样填入其 OAuth 应用配置中，并确保域名、协议、端口和
                 <code className="mx-1 rounded border border-white/10 bg-white/8 px-2 py-1 text-xs text-white">
-                  redirect_uri_mismatch
+                  NEXTAUTH_URL
                 </code>
-                ，就把下面这个地址原样加入 Google Cloud Console 的
-                <code className="mx-1 rounded border border-white/10 bg-white/8 px-2 py-1 text-xs text-white">
-                  Authorized redirect URIs
-                </code>
-                ，并确保你访问站点时使用的域名、协议、端口和这里完全一致。
+                完全一致。
               </p>
-              <code className="mt-4 block rounded-2xl border border-amber-400/30 bg-amber-300/10 px-4 py-3 text-sm text-amber-100">
-                {googleCallbackUrl}
-              </code>
             </div>
 
             <div className="rounded-[28px] border border-white/10 bg-white/[0.03] p-6">
