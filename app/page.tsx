@@ -16,6 +16,8 @@ export default async function Home(): Promise<React.JSX.Element> {
   const accountSummary = session?.user?.id
     ? await getAccountCenterSummary(session.user.id)
     : null;
+  const authBaseUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+  const googleCallbackUrl = `${authBaseUrl}/api/auth/callback/google`;
   const sessionJson = session ? JSON.stringify(session, null, 2) : null;
 
   return (
@@ -218,8 +220,33 @@ export default async function Home(): Promise<React.JSX.Element> {
                 </code>
                 替换成目标平台标识即可。
               </p>
+              <div className="mt-4 rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/74">
+                当前
+                <code className="mx-1 rounded border border-white/10 bg-white/8 px-2 py-1 text-xs text-white">
+                  NEXTAUTH_URL
+                </code>
+                为
+                <code className="mx-1 rounded border border-white/10 bg-white/8 px-2 py-1 text-xs text-white">
+                  {authBaseUrl}
+                </code>
+                。
+              </div>
               <code className="mt-4 block rounded-2xl border border-white/10 bg-black/55 px-4 py-3 text-sm text-white">
-                http://localhost:3000/api/auth/callback/&lt;provider&gt;
+                {authBaseUrl}/api/auth/callback/&lt;provider&gt;
+              </code>
+              <p className="mt-4 text-sm leading-7 text-white/64">
+                如果 Google 报
+                <code className="mx-1 rounded border border-white/10 bg-white/8 px-2 py-1 text-xs text-white">
+                  redirect_uri_mismatch
+                </code>
+                ，就把下面这个地址原样加入 Google Cloud Console 的
+                <code className="mx-1 rounded border border-white/10 bg-white/8 px-2 py-1 text-xs text-white">
+                  Authorized redirect URIs
+                </code>
+                ，并确保你访问站点时使用的域名、协议、端口和这里完全一致。
+              </p>
+              <code className="mt-4 block rounded-2xl border border-amber-400/30 bg-amber-300/10 px-4 py-3 text-sm text-amber-100">
+                {googleCallbackUrl}
               </code>
             </div>
 
