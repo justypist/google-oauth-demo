@@ -25,13 +25,13 @@ export default async function Home(): Promise<React.JSX.Element> {
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl space-y-5">
               <p className="text-sm font-medium uppercase tracking-[0.32em] text-white/55">
-                Local Account Demo
+                OAuth Demo
               </p>
               <h1 className="text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-                基于 Next.js + Drizzle 的本地账号系统示例
+                多平台 OAuth 登录与账号绑定示例
               </h1>
               <p className="max-w-xl text-base leading-7 text-white/74 sm:text-lg">
-                当前实现已经接入 PostgreSQL 本地用户库。第三方登录成功后，会落本地用户表和账号绑定表；后续在已登录状态下继续 OAuth，可把多个平台挂到同一个本地账号。
+                当前实现基于 PostgreSQL 维护本地用户与账号绑定关系。第三方 OAuth 登录成功后，会落本地用户表和账号绑定表；后续在已登录状态下继续授权，可把多个平台挂到同一个本地账号。
                 你也可以访问
                 <code className="mx-1 rounded border border-white/10 bg-white/8 px-2 py-1 text-sm text-white">
                   /api/demo/session
@@ -93,14 +93,14 @@ export default async function Home(): Promise<React.JSX.Element> {
                   {session.user?.image ? (
                     <Image
                       src={session.user.image}
-                      alt={session.user.name ?? "Google avatar"}
+                      alt={session.user.name ?? "User avatar"}
                       width={64}
                       height={64}
                       className="h-16 w-16 rounded-2xl border border-white/10 object-cover grayscale"
                     />
                   ) : (
                     <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/8 text-2xl font-semibold text-white">
-                      {(session.user?.name ?? "G").slice(0, 1).toUpperCase()}
+                      {(session.user?.name ?? "U").slice(0, 1).toUpperCase()}
                     </div>
                   )}
 
@@ -156,7 +156,7 @@ export default async function Home(): Promise<React.JSX.Element> {
               </div>
             ) : (
               <div className="mt-6 rounded-3xl border border-dashed border-white/15 bg-white/5 p-6 text-sm leading-7 text-white/68">
-                还没有检测到登录态。完成 Google OAuth 配置后，点击上方按钮即可跳转到 Google 授权页。
+                还没有检测到登录态。完成任一已启用平台的 OAuth 配置后，点击上方按钮即可跳转到对应授权页。
               </div>
             )}
           </article>
@@ -208,10 +208,18 @@ export default async function Home(): Promise<React.JSX.Element> {
             <div className="rounded-[28px] border border-white/10 bg-white/[0.04] p-6">
               <h2 className="text-xl font-semibold text-white">OAuth 回调地址</h2>
               <p className="mt-2 text-sm leading-7 text-white/74">
-                开发环境下，Google 至少需要配置下面这个 redirect URI。后续加其他平台时，也按同样模式增加即可。
+                回调路径遵循
+                <code className="mx-1 rounded border border-white/10 bg-white/8 px-2 py-1 text-xs text-white">
+                  /api/auth/callback/&lt;provider&gt;
+                </code>
+                ，把
+                <code className="mx-1 rounded border border-white/10 bg-white/8 px-2 py-1 text-xs text-white">
+                  &lt;provider&gt;
+                </code>
+                替换成目标平台标识即可。
               </p>
               <code className="mt-4 block rounded-2xl border border-white/10 bg-black/55 px-4 py-3 text-sm text-white">
-                http://localhost:3000/api/auth/callback/google
+                http://localhost:3000/api/auth/callback/&lt;provider&gt;
               </code>
             </div>
 

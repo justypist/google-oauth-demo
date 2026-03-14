@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "隐私政策 | Local Account Demo",
-  description: "Local Account Demo 隐私政策",
+  title: "隐私政策 | OAuth Demo",
+  description: "OAuth Demo 隐私政策",
 };
 
 export default function PrivacyPage(): React.JSX.Element {
@@ -46,7 +46,7 @@ export default function PrivacyPage(): React.JSX.Element {
           <article className="space-y-3">
             <h2 className="text-xl font-semibold text-white">1. 我们收集的数据</h2>
             <p className="text-sm leading-7 text-white/64">
-              当你使用 Google 或其他第三方平台登录时，系统可能收集并存储以下信息：昵称、邮箱、头像、第三方平台账号标识、本地用户 ID、登录会话信息，以及账号绑定关系。
+              当你使用第三方 OAuth 平台登录时，系统可能收集并存储以下信息：昵称、邮箱、头像、第三方平台账号标识、本地用户 ID、登录会话信息，以及账号绑定关系。
             </p>
           </article>
 

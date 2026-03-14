@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Google OAuth Demo",
-  description: "Next.js Google 登录演示项目",
+  title: "OAuth Demo",
+  description: "Next.js 多平台 OAuth 登录演示项目",
 };
 
 export default function RootLayout({

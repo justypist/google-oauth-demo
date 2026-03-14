@@ -13,25 +13,25 @@ if (!databaseUrl) {
 type Database = NodePgDatabase<typeof schema>;
 
 declare global {
-  var __googleOAuthDemoPool: Pool | undefined;
-  var __googleOAuthDemoDb: Database | undefined;
+  var __oauthDemoPool: Pool | undefined;
+  var __oauthDemoDb: Database | undefined;
 }
 
 const pool =
-  globalThis.__googleOAuthDemoPool ??
+  globalThis.__oauthDemoPool ??
   new Pool({
     connectionString: databaseUrl,
   });
 
 const db =
-  globalThis.__googleOAuthDemoDb ??
+  globalThis.__oauthDemoDb ??
   drizzle(pool, {
     schema,
   });
 
 if (process.env.NODE_ENV !== "production") {
-  globalThis.__googleOAuthDemoPool = pool;
-  globalThis.__googleOAuthDemoDb = db;
+  globalThis.__oauthDemoPool = pool;
+  globalThis.__oauthDemoDb = db;
 }
 
 export { db, pool };

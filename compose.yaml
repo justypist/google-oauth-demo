@@ -3,14 +3,14 @@ services:
     image: postgres:alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-google_oauth_demo}
-      POSTGRES_USER: ${POSTGRES_USER:-google_oauth_demo}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-google_oauth_demo}
+      POSTGRES_DB: ${POSTGRES_DB:-oauth_demo}
+      POSTGRES_USER: ${POSTGRES_USER:-oauth_demo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-oauth_demo}
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${POSTGRES_USER:-google_oauth_demo} -d ${POSTGRES_DB:-google_oauth_demo}",
+          "pg_isready -U ${POSTGRES_USER:-oauth_demo} -d ${POSTGRES_DB:-oauth_demo}",
         ]
       interval: 5s
       timeout: 5s
@@ -24,13 +24,13 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ${APP_IMAGE:-google-oauth-demo:local}
+    image: ${APP_IMAGE:-oauth-demo:local}
     restart: unless-stopped
     depends_on:
       db:
         condition: service_healthy
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-google_oauth_demo}:${POSTGRES_PASSWORD:-google_oauth_demo}@db:5432/${POSTGRES_DB:-google_oauth_demo}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-oauth_demo}:${POSTGRES_PASSWORD:-oauth_demo}@db:5432/${POSTGRES_DB:-oauth_demo}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
       GITHUB_ID: ${GITHUB_ID:-}

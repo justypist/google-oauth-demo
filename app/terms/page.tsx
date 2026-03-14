@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "服务条款 | Local Account Demo",
-  description: "Local Account Demo 服务条款",
+  title: "服务条款 | OAuth Demo",
+  description: "OAuth Demo 服务条款",
 };
 
 export default function TermsPage(): React.JSX.Element {

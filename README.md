@@ -1,6 +1,6 @@
-# Local Account Demo
+# OAuth Demo
 
-一个基于 Next.js App Router + `next-auth` + `drizzle` + PostgreSQL 的本地账号系统示例。
+一个基于 Next.js App Router + `next-auth` + `drizzle` + PostgreSQL 的 OAuth 登录与账号绑定示例。
 核心目标：
 
 - 第三方登录后落本地 `user`
@@ -41,7 +41,7 @@ pnpm dev
 cp .env.example .env
 ```
 
-然后至少填写这些值：
+然后至少填写基础项和一组已启用平台的凭证，例如：
 
 ```bash
 GOOGLE_CLIENT_ID=你的_google_client_id
@@ -93,7 +93,7 @@ echo "$GHCR_TOKEN" | docker login ghcr.io -u justypist --password-stdin
 构建并打标签：
 
 ```bash
-export APP_IMAGE=ghcr.io/justypist/google-oauth-demo:latest
+export APP_IMAGE=ghcr.io/justypist/oauth-demo:latest
 docker compose build app
 ```
 
@@ -106,25 +106,29 @@ docker compose push app
 如果要打版本号：
 
 ```bash
-export APP_IMAGE=ghcr.io/justypist/google-oauth-demo:v0.1.0
+export APP_IMAGE=ghcr.io/justypist/oauth-demo:v0.1.0
 docker compose build app
 docker compose push app
 ```
 
 ## 当前本地开发数据库
 
-- 数据库：`google_oauth_demo_dev`
-- 用户：`google_oauth_demo_dev`
-- 密码：`google_oauth_demo_dev`
+- 数据库：`oauth_demo_dev`
+- 用户：`oauth_demo_dev`
+- 密码：`oauth_demo_dev`
 
 项目使用的连接串已经写入 `.env.local`，如需重建，也可以直接用下面命令：
 
 ```bash
-docker exec postgres psql -U typist -d test -c "CREATE ROLE google_oauth_demo_dev LOGIN PASSWORD 'google_oauth_demo_dev';"
-docker exec postgres psql -U typist -d test -c "CREATE DATABASE google_oauth_demo_dev OWNER google_oauth_demo_dev;"
+docker exec postgres psql -U typist -d test -c "CREATE ROLE oauth_demo_dev LOGIN PASSWORD 'oauth_demo_dev';"
+docker exec postgres psql -U typist -d test -c "CREATE DATABASE oauth_demo_dev OWNER oauth_demo_dev;"
 ```
 
 ## 需要手工配置的内容
+
+不同 OAuth 平台的控制台入口各不相同，但整体流程一致：创建应用、配置同意页、填写回调地址、拿到客户端凭证，再写入环境变量。
+
+下面给出一个 Google 平台示例，其他平台按各自文档替换即可。
 
 1. 打开 Google Cloud Console。
 2. 创建或选择一个项目。
@@ -141,7 +145,7 @@ http://localhost:3000/api/auth/callback/google
 8. 填写 `.env.local`：
 
 ```bash
-DATABASE_URL=postgresql://google_oauth_demo_dev:google_oauth_demo_dev@127.0.0.1:5432/google_oauth_demo_dev
+DATABASE_URL=postgresql://oauth_demo_dev:oauth_demo_dev@127.0.0.1:5432/oauth_demo_dev
 GOOGLE_CLIENT_ID=你的_google_client_id
 GOOGLE_CLIENT_SECRET=你的_google_client_secret
 GITHUB_ID=
@@ -163,7 +167,7 @@ openssl rand -base64 32
 - `GET /api/demo/session` 是一个受保护的示例接口。
 - 账号中心页面是 `/account`。
 - 未登录访问受保护接口会返回 `401`。
-- 当前已支持 Google；结构上已预留 GitHub，补环境变量即可启用。
+- 当前已内置多个常见 OAuth 平台接入结构；补齐对应环境变量即可启用。
 
 ## 数据库命令
 
